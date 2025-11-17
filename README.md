@@ -1,9 +1,5 @@
 # SpoofDPI Menubar App
 
-A basic macOS menubar application to control SpoofDPI with a transparent interface.
-
-## About
-
 This application provides a macOS menubar interface for [SpoofDPI](https://github.com/xvzc/SpoofDPI), based on the configuration from [GoodbyeDPI-Turkey](https://github.com/cagritaskn/GoodbyeDPI-Turkey). The app wraps the SpoofDPI executable with an easy-to-use toggle interface, eliminating the need to run terminal commands manually.
 
 ## Features
