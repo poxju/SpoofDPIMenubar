@@ -39,13 +39,9 @@ The DMG installer will be created in the `dist/` folder as `SpoofDPI-1.0.0-mac.d
 2. Open it and drag `SpoofDPI.app` to Applications
 3. Launch the app - it will appear in your menubar
 
-### macOS Gatekeeper
+### macOS
 If macOS blocks the app on first launch, you can:
-- **Option 1**: Right-click the app → Open → Open
-- **Option 2**: Remove quarantine attribute:
-```bash
-xattr -dr com.apple.quarantine /Applications/SpoofDPI.app
-```
+- **Option 1**: Settings → Privacy & Security → Allow the application from the security section at the bottom
 
 ## Requirements
 
