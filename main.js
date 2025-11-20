@@ -23,6 +23,7 @@ let updateDownloaded = false;
 let updateInfo = null;
 let manualUpdateCheck = false;
 let updateCheckInterval = null;
+let updateDialogWindow = null;
 
 // Resolve path to the spoofdpi executable for dev and packaged builds
 function resolveSpoofDpiPath() {
@@ -70,6 +71,410 @@ function createWindow() {
     if (!window.webContents.isDevToolsOpened()) {
       hideWindow();
     }
+  });
+}
+
+// Create download progress window
+function createDownloadProgressWindow() {
+  if (downloadProgressWindow && !downloadProgressWindow.isDestroyed()) {
+    downloadProgressWindow.focus();
+    return;
+  }
+
+  downloadProgressWindow = new BrowserWindow({
+    width: 400,
+    height: 240,
+    frame: false,
+    resizable: false,
+    transparent: true,
+    backgroundColor: '#00000000',
+    vibrancy: 'menu',
+    visualEffectState: 'active',
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  // Center the window
+  const { screen } = require('electron');
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  downloadProgressWindow.setPosition(
+    Math.round((width - 400) / 2),
+    Math.round((height - 240) / 2)
+  );
+
+  downloadProgressWindow.loadURL(`data:text/html;charset=utf-8,
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: rgba(30, 30, 30, 0.98);
+          backdrop-filter: blur(20px);
+          border-radius: 12px;
+          color: white;
+          padding: 32px;
+          width: 400px;
+          height: 240px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+        .header {
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        h2 {
+          font-size: 20px;
+          font-weight: 600;
+          color: white;
+        }
+        .progress-container {
+          margin-bottom: 20px;
+        }
+        .progress-bar {
+          width: 100%;
+          height: 8px;
+          background: #2a2a2a;
+          border-radius: 4px;
+          overflow: hidden;
+          margin-bottom: 12px;
+        }
+        .progress-fill {
+          height: 100%;
+          background: #007AFF;
+          border-radius: 4px;
+          transition: width 0.3s ease;
+          width: 0%;
+        }
+        .progress-text {
+          text-align: center;
+          font-size: 16px;
+          color: white;
+          font-weight: 500;
+        }
+        .speed-text {
+          text-align: center;
+          font-size: 13px;
+          color: #999;
+          margin-top: 8px;
+          display: none;
+        }
+        .speed-text.show {
+          display: block;
+        }
+        .buttons {
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+          margin-top: auto;
+        }
+        .buttons.hidden {
+          display: none;
+        }
+        .btn {
+          padding: 10px 24px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          min-width: 100px;
+        }
+        .btn-cancel {
+          background: #2a2a2a;
+          color: white;
+        }
+        .btn-cancel:hover {
+          background: #3a3a3a;
+        }
+        .btn-install {
+          background: #007AFF;
+          color: white;
+        }
+        .btn-install:hover {
+          background: #0051D5;
+        }
+        .btn:active {
+          transform: scale(0.98);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <h2 id="title">Downloading...</h2>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="progress-text" id="progressText">0%</div>
+        <div class="speed-text" id="speedText">Preparing download...</div>
+      </div>
+      <div class="buttons hidden" id="buttons">
+        <button class="btn btn-cancel" onclick="cancelInstall()">Cancel</button>
+        <button class="btn btn-install" onclick="installUpdate()">Install</button>
+      </div>
+    </body>
+    <script>
+      const { ipcRenderer } = require('electron');
+      ipcRenderer.on('download-progress', (event, data) => {
+        document.getElementById('progressFill').style.width = data.percent + '%';
+        document.getElementById('progressText').textContent = data.percent + '%';
+        const speedText = document.getElementById('speedText');
+        speedText.textContent = data.transferred + ' MB / ' + data.total + ' MB • ' + data.speed + ' MB/s';
+        speedText.classList.add('show');
+      });
+      ipcRenderer.on('download-complete', (event, data) => {
+        document.getElementById('title').textContent = 'Download Complete';
+        document.getElementById('progressFill').style.width = '100%';
+        document.getElementById('progressText').textContent = '100%';
+        document.getElementById('speedText').style.display = 'none';
+        document.getElementById('buttons').classList.remove('hidden');
+      });
+      function cancelInstall() {
+        ipcRenderer.send('download-cancel');
+      }
+      function installUpdate() {
+        ipcRenderer.send('download-install');
+      }
+    </script>
+    </html>
+  `);
+
+  downloadProgressWindow.on('closed', () => {
+    downloadProgressWindow = null;
+  });
+
+  // Handle IPC messages from the download window
+  ipcMain.on('download-cancel', () => {
+    if (downloadProgressWindow && !downloadProgressWindow.isDestroyed()) {
+      downloadProgressWindow.close();
+    }
+    isDownloading = false;
+  });
+
+  ipcMain.on('download-install', () => {
+    if (downloadProgressWindow && !downloadProgressWindow.isDestroyed()) {
+      downloadProgressWindow.close();
+    }
+    // quitAndInstall() automatically handles:
+    // - Closing the app
+    // - Installing the new version
+    // - Removing the old version
+    autoUpdater.quitAndInstall();
+  });
+}
+
+// Create update available dialog window
+function showUpdateAvailableDialog(info) {
+  // Close existing dialog if open
+  if (updateDialogWindow && !updateDialogWindow.isDestroyed()) {
+    updateDialogWindow.focus();
+    return;
+  }
+
+  // Calculate file size in MB
+  const fileSizeMB = info.files && info.files.length > 0 
+    ? (info.files.reduce((total, file) => total + (file.size || 0), 0) / (1024 * 1024)).toFixed(2)
+    : 'Unknown';
+
+  updateDialogWindow = new BrowserWindow({
+    width: 500,
+    height: 280,
+    frame: false,
+    resizable: false,
+    transparent: true,
+    backgroundColor: '#00000000',
+    vibrancy: 'menu',
+    visualEffectState: 'active',
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  // Center the window
+  const { screen } = require('electron');
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  updateDialogWindow.setPosition(
+    Math.round((width - 500) / 2),
+    Math.round((height - 280) / 2)
+  );
+
+  const currentVersion = app.getVersion();
+  const newVersion = info.version;
+
+  updateDialogWindow.loadURL(`data:text/html;charset=utf-8,
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <meta charset="UTF-8">
+      <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+          background: rgba(30, 30, 30, 0.98);
+          backdrop-filter: blur(20px);
+          border-radius: 12px;
+          color: white;
+          padding: 32px;
+          width: 500px;
+          height: 280px;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
+        }
+        .header {
+          display: flex;
+          align-items: center;
+          margin-bottom: 24px;
+        }
+        .icon {
+          width: 64px;
+          height: 64px;
+          background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 32px;
+          margin-right: 20px;
+          flex-shrink: 0;
+        }
+        .title {
+          font-size: 24px;
+          font-weight: 600;
+          color: white;
+        }
+        .content {
+          flex: 1;
+          margin-bottom: 24px;
+        }
+        .version-info {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+          margin-bottom: 20px;
+        }
+        .version-line {
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          color: #ccc;
+        }
+        .version-label {
+          min-width: 120px;
+          color: #999;
+        }
+        .version-value {
+          color: white;
+          font-weight: 500;
+        }
+        .size-info {
+          font-size: 13px;
+          color: #999;
+          margin-top: 8px;
+        }
+        .buttons {
+          display: flex;
+          gap: 12px;
+          justify-content: flex-end;
+        }
+        .btn {
+          padding: 10px 24px;
+          border: none;
+          border-radius: 8px;
+          font-size: 14px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.2s;
+          min-width: 100px;
+        }
+        .btn-close {
+          background: #2a2a2a;
+          color: white;
+        }
+        .btn-close:hover {
+          background: #3a3a3a;
+        }
+        .btn-download {
+          background: #4ade80;
+          color: white;
+        }
+        .btn-download:hover {
+          background: #22c55e;
+        }
+        .btn:active {
+          transform: scale(0.98);
+        }
+      </style>
+    </head>
+    <body>
+      <div class="header">
+        <div class="icon">📦</div>
+        <div class="title">New version available</div>
+      </div>
+      <div class="content">
+        <div class="version-info">
+          <div class="version-line">
+            <span class="version-label">Current version:</span>
+            <span class="version-value">v${currentVersion}</span>
+          </div>
+          <div class="version-line">
+            <span class="version-label">Latest version:</span>
+            <span class="version-value">v${newVersion}</span>
+          </div>
+        </div>
+        <div class="size-info">Update size: ${fileSizeMB} MB</div>
+      </div>
+      <div class="buttons">
+        <button class="btn btn-close" onclick="closeDialog()">Close</button>
+        <button class="btn btn-download" onclick="downloadUpdate()">Download</button>
+      </div>
+    </body>
+    <script>
+      const { ipcRenderer } = require('electron');
+      function closeDialog() {
+        ipcRenderer.send('update-dialog-close');
+      }
+      function downloadUpdate() {
+        ipcRenderer.send('update-dialog-download');
+      }
+    </script>
+    </html>
+  `);
+
+  updateDialogWindow.on('closed', () => {
+    updateDialogWindow = null;
+  });
+
+  // Handle IPC messages from the dialog
+  ipcMain.once('update-dialog-close', () => {
+    if (updateDialogWindow && !updateDialogWindow.isDestroyed()) {
+      updateDialogWindow.close();
+    }
+  });
+
+  ipcMain.once('update-dialog-download', () => {
+    if (updateDialogWindow && !updateDialogWindow.isDestroyed()) {
+      updateDialogWindow.close();
+    }
+    // Start download
+    isDownloading = true;
+    createDownloadProgressWindow();
+    autoUpdater.downloadUpdate();
   });
 }
 
@@ -304,8 +709,11 @@ ipcMain.handle('get-app-version', () => {
 });
 
 // Auto-updater configuration
-autoUpdater.autoDownload = true;
+autoUpdater.autoDownload = false; // Ask user before downloading
 autoUpdater.autoInstallOnAppQuit = true;
+
+let downloadProgressWindow = null;
+let isDownloading = false;
 
 // Check for updates
 function checkForUpdates(showDialog = false) {
@@ -344,17 +752,9 @@ autoUpdater.on('update-available', (info) => {
     tray.setToolTip(`SpoofDPI - Update available: ${info.version}`);
   }
   
-  // Show dialog if user manually checked for updates
-  if (manualUpdateCheck) {
-    dialog.showMessageBox(window, {
-      type: 'info',
-      title: 'Update Available',
-      message: `A new version (${info.version}) is available. The update will be downloaded automatically.`,
-      detail: `Current version: ${app.getVersion()}\nNew version: ${info.version}`,
-      buttons: ['OK']
-    }).catch(() => {}); // Ignore errors if window is closed
-    manualUpdateCheck = false;
-  }
+  // Show custom update dialog window
+  showUpdateAvailableDialog(info);
+  manualUpdateCheck = false;
 });
 
 autoUpdater.on('update-not-available', (info) => {
@@ -391,8 +791,26 @@ autoUpdater.on('error', (err) => {
 autoUpdater.on('download-progress', (progressObj) => {
   const message = `Download speed: ${progressObj.bytesPerSecond} - Downloaded ${progressObj.percent}% (${progressObj.transferred}/${progressObj.total})`;
   console.log(message);
+  
+  // Update tray tooltip
   if (tray) {
-    tray.setToolTip(`SpoofDPI - Downloading update: ${Math.round(progressObj.percent)}%`);
+    const transferredMB = (progressObj.transferred / (1024 * 1024)).toFixed(2);
+    const totalMB = (progressObj.total / (1024 * 1024)).toFixed(2);
+    tray.setToolTip(`SpoofDPI - Downloading: ${Math.round(progressObj.percent)}% (${transferredMB} MB / ${totalMB} MB)`);
+  }
+  
+  // Update progress window if it exists
+  if (downloadProgressWindow && !downloadProgressWindow.isDestroyed()) {
+    const transferredMB = (progressObj.transferred / (1024 * 1024)).toFixed(2);
+    const totalMB = (progressObj.total / (1024 * 1024)).toFixed(2);
+    const speedMBps = (progressObj.bytesPerSecond / (1024 * 1024)).toFixed(2);
+    
+    downloadProgressWindow.webContents.send('download-progress', {
+      percent: Math.round(progressObj.percent),
+      transferred: transferredMB,
+      total: totalMB,
+      speed: speedMBps
+    });
   }
 });
 
@@ -400,23 +818,18 @@ autoUpdater.on('update-downloaded', (info) => {
   console.log('Update downloaded:', info.version);
   updateDownloaded = true;
   updateAvailable = false;
+  isDownloading = false;
+  
+  // Update progress window to show install option
+  if (downloadProgressWindow && !downloadProgressWindow.isDestroyed()) {
+    downloadProgressWindow.webContents.send('download-complete', {
+      version: info.version
+    });
+  }
+  
   if (tray) {
     tray.setToolTip(`SpoofDPI - Update ready: ${info.version}`);
   }
-  
-  // Always show dialog when update is downloaded
-  dialog.showMessageBox(window, {
-    type: 'info',
-    title: 'Update Ready',
-    message: `Update ${info.version} has been downloaded. The application will restart to install the update.`,
-    buttons: ['Restart Now', 'Later'],
-    defaultId: 0,
-    cancelId: 1
-  }).then((result) => {
-    if (result.response === 0) {
-      autoUpdater.quitAndInstall();
-    }
-  }).catch(() => {}); // Ignore errors if window is closed
   
   // Reset manual check flag
   manualUpdateCheck = false;
