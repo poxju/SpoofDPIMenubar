@@ -16,10 +16,11 @@
       background: transparent;
       color: white;
       border-radius: 12px;
-      overflow: visible;
+      overflow: hidden;
       width: 280px;
       position: relative;
       padding-top: 8px;
+      margin: 0;
     }
 
     .container {
@@ -98,10 +99,236 @@
     .message.success {
       color: #4ade80;
     }
+
+    .settings-icon {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s, transform 0.2s;
+      color: white;
+    }
+
+    .settings-icon:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    .settings-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 12px;
+      padding: 16px 20px;
+      padding-bottom: 20px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      z-index: 10;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .settings-panel.active {
+      display: flex;
+    }
+
+    .settings-header {
+      position: absolute;
+      top: 16px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      pointer-events: none;
+      height: 20px;
+    }
+
+    .settings-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: white;
+      text-align: center;
+      line-height: 20px;
+    }
+
+    .settings-close-wrapper {
+      position: absolute;
+      top: 0;
+      right: 16px;
+      pointer-events: all;
+      height: 20px;
+      display: flex;
+      align-items: center;
+    }
+
+    .close-settings {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: opacity 0.2s, transform 0.2s;
+      color: white;
+    }
+
+    .close-settings:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+
+    .settings-content {
+      width: 100%;
+      padding-top: 40px;
+    }
+
+    .settings-button {
+      width: 100%;
+      padding: 10px 16px;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .settings-button:hover {
+      background: #3a3a3a;
+    }
+
+    .settings-button:active {
+      background: #1a1a1a;
+    }
+
+    .settings-button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .version-info {
+      margin-top: 12px;
+      margin-bottom: 8px;
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+    }
+
+    /* Custom scrollbar for settings panel */
+    .settings-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .settings-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .settings-panel::-webkit-scrollbar-thumb {
+      background: #444;
+      border-radius: 3px;
+    }
+
+    .settings-panel::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    }
+
+    .settings-section {
+      margin-bottom: 14px;
+    }
+
+    .settings-label {
+      font-size: 11px;
+      color: #999;
+      margin-bottom: 6px;
+      text-align: left;
+    }
+
+    .settings-select {
+      width: 100%;
+      padding: 8px 12px;
+      background: #2a2a2a;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 13px;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23ffffff' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      padding-right: 36px;
+    }
+
+    .settings-select:focus {
+      outline: none;
+      background-color: #3a3a3a;
+    }
+
+    .settings-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+    }
+
+    .settings-toggle-label {
+      font-size: 13px;
+      color: white;
+    }
+
+    .toggle-switch-small {
+      width: 44px;
+      height: 24px;
+      background: #2a2a2a;
+      border-radius: 12px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .toggle-switch-small.active {
+      background: #4ade80;
+    }
+
+    .toggle-knob-small {
+      width: 18px;
+      height: 18px;
+      background: #666;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: all 0.3s ease;
+    }
+
+    .toggle-switch-small.active .toggle-knob-small {
+      left: 23px;
+      background: white;
+    }
   </style>
 </head>
 <body>
   <div class="container">
+    <svg class="settings-icon" id="settingsIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+    </svg>
+
     <div class="logo-main">SpoofDPI</div>
     
     <div class="toggle-container">
@@ -113,6 +340,56 @@
     <div class="status-text" id="statusText">Unable to Connect</div>
     <div class="error-text" id="errorText">IPC Error</div>
     <div class="message" id="message"></div>
+  </div>
+
+  <div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">
+      <div class="settings-title">Settings</div>
+      <div class="settings-close-wrapper">
+        <svg class="close-settings" id="closeSettings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"></path>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="settings-content">
+      <button class="settings-button" id="checkUpdatesBtn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path>
+        </svg>
+        Check for Updates
+      </button>
+
+      <div class="settings-section">
+        <div class="settings-label">Check for Updates</div>
+        <select class="settings-select" id="updateFrequency">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="never">Never</option>
+        </select>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-toggle">
+          <div class="settings-toggle-label">Show icon in dock</div>
+          <div class="toggle-switch-small" id="showDockIconToggle">
+            <div class="toggle-knob-small"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-toggle">
+          <div class="settings-toggle-label">Start at login</div>
+          <div class="toggle-switch-small" id="startAtLoginToggle">
+            <div class="toggle-knob-small"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="version-info" id="versionInfo"></div>
+    </div>
   </div>
 
   <script src="renderer.js"></script>

@@ -1,11 +1,18 @@
 {
   "name": "spoofdpi-menubar",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "macOS menubar app to control spoofdpi",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "build": "electron-builder"
+    "build": "electron-builder",
+    "build:publish": "electron-builder --publish always",
+    "version:patch": "npm version patch --no-git-tag-version",
+    "version:minor": "npm version minor --no-git-tag-version",
+    "version:major": "npm version major --no-git-tag-version",
+    "release:patch": "npm run version:patch && npm run build:publish",
+    "release:minor": "npm run version:minor && npm run build:publish",
+    "release:major": "npm run version:major && npm run build:publish"
   },
   "keywords": [
     "electron",
@@ -23,12 +30,15 @@
     "productName": "SpoofDPI",
     "asar": true,
     "artifactName": "${productName}-${version}-mac.${ext}",
-    "publish": null,
+    "publish": {
+      "provider": "github",
+      "owner": "poxju",
+      "repo": "SpoofDPIMenubar"
+    },
     "mac": {
       "category": "public.app-category.utilities",
       "target": "dmg",
-      "icon": "assets/icon.png",
-      "iconSize": 512
+      "icon": "assets/icon.png"
     },
     "files": [
       "main.js",
@@ -39,5 +49,9 @@
     "extraResources": [
       "spoofdpi"
     ]
+  },
+  "dependencies": {
+    "electron-store": "^8.2.0",
+    "electron-updater": "^6.6.2"
   }
 }
