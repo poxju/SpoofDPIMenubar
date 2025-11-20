@@ -84,6 +84,7 @@ function createDownloadProgressWindow() {
   downloadProgressWindow = new BrowserWindow({
     width: 400,
     height: 240,
+    show: false,
     frame: false,
     resizable: false,
     transparent: true,
@@ -106,6 +107,10 @@ function createDownloadProgressWindow() {
     Math.round((width - 400) / 2),
     Math.round((height - 240) / 2)
   );
+
+  downloadProgressWindow.once('ready-to-show', () => {
+    downloadProgressWindow.show();
+  });
 
   downloadProgressWindow.loadURL(`data:text/html;charset=utf-8,
     <!DOCTYPE html>
@@ -290,6 +295,7 @@ function showUpdateAvailableDialog(info) {
   updateDialogWindow = new BrowserWindow({
     width: 500,
     height: 280,
+    show: false,
     frame: false,
     resizable: false,
     transparent: true,
@@ -315,6 +321,10 @@ function showUpdateAvailableDialog(info) {
 
   const currentVersion = app.getVersion();
   const newVersion = info.version;
+
+  updateDialogWindow.once('ready-to-show', () => {
+    updateDialogWindow.show();
+  });
 
   updateDialogWindow.loadURL(`data:text/html;charset=utf-8,
     <!DOCTYPE html>
