@@ -708,6 +708,58 @@ ipcMain.handle('get-app-version', () => {
   return app.getVersion();
 });
 
+ipcMain.handle('flush-dns', async () => {
+  if (process.platform !== 'darwin') {
+    return { success: false, message: 'Flush DNS is only available on macOS' };
+  }
+
+  try {
+    // Flush DNS cache on macOS
+    // First command: flush cache (works without sudo)
+    const flushCache = spawn('dscacheutil', ['-flushcache']);
+    
+    await new Promise((resolve, reject) => {
+      flushCache.on('close', (code) => {
+        if (code === 0) {
+          resolve();
+        } else {
+          reject(new Error(`dscacheutil exited with code ${code}`));
+        }
+      });
+      flushCache.on('error', reject);
+    });
+
+    // Second command: restart mDNSResponder (requires sudo, but we try without first)
+    // If it fails, we still consider it successful since cache was flushed
+    try {
+      const killMdns = spawn('killall', ['-HUP', 'mDNSResponder']);
+      await new Promise((resolve, reject) => {
+        killMdns.on('close', (code) => {
+          // Code 1 means process not found, which is okay
+          if (code === 0 || code === 1) {
+            resolve();
+          } else {
+            reject(new Error(`killall exited with code ${code}`));
+          }
+        });
+        killMdns.on('error', () => {
+          // If killall fails (e.g., permission denied), that's okay
+          // The cache flush already succeeded
+          resolve();
+        });
+      });
+    } catch (error) {
+      // Ignore errors from killall - cache was already flushed
+      console.log('mDNSResponder restart skipped:', error.message);
+    }
+
+    return { success: true, message: 'DNS cache flushed successfully' };
+  } catch (error) {
+    console.error('Error flushing DNS:', error);
+    return { success: false, message: error.message || 'Failed to flush DNS cache' };
+  }
+});
+
 // Auto-updater configuration
 autoUpdater.autoDownload = false; // Ask user before downloading
 autoUpdater.autoInstallOnAppQuit = true;

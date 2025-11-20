@@ -227,6 +227,40 @@
       cursor: not-allowed;
     }
 
+    .settings-button.loading {
+      position: relative;
+      color: transparent;
+    }
+
+    .settings-button.loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      top: 50%;
+      left: 50%;
+      margin-left: -8px;
+      margin-top: -8px;
+      border: 2px solid #4ade80;
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .settings-button.success {
+      background: #4ade80;
+      color: white;
+    }
+
+    .settings-button.error {
+      background: #f87171;
+      color: white;
+    }
+
     .version-info {
       margin-top: 12px;
       margin-bottom: 0;
@@ -392,6 +426,15 @@
             <div class="toggle-knob-small"></div>
           </div>
         </div>
+      </div>
+
+      <div class="settings-section">
+        <button class="settings-button" id="flushDnsBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path>
+          </svg>
+          Flush DNS Cache
+        </button>
       </div>
 
       <div class="version-info" id="versionInfo"></div>

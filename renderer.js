@@ -12,6 +12,7 @@ const versionInfo = document.getElementById('versionInfo');
 const updateFrequency = document.getElementById('updateFrequency');
 const showDockIconToggle = document.getElementById('showDockIconToggle');
 const startAtLoginToggle = document.getElementById('startAtLoginToggle');
+const flushDnsBtn = document.getElementById('flushDnsBtn');
 
 let isConnected = false;
 
@@ -226,6 +227,97 @@ startAtLoginToggle.addEventListener('click', async () => {
     showMessage('Setting saved', 'success');
   } catch (error) {
     showMessage('Failed to save setting', 'error');
+  }
+});
+
+// Flush DNS button
+flushDnsBtn.addEventListener('click', async () => {
+  // Reset any previous state
+  flushDnsBtn.classList.remove('success', 'error');
+  flushDnsBtn.disabled = true;
+  flushDnsBtn.classList.add('loading');
+  flushDnsBtn.innerHTML = 'Flushing DNS Cache...';
+  
+  try {
+    const result = await ipcRenderer.invoke('flush-dns');
+    
+    // Remove loading state
+    flushDnsBtn.classList.remove('loading');
+    
+    if (result.success) {
+      // Show success state
+      flushDnsBtn.classList.add('success');
+      flushDnsBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 6L9 17l-5-5"></path>
+        </svg>
+        DNS Cache Flushed
+      `;
+      showMessage('DNS cache flushed successfully', 'success');
+      
+      // Reset to normal state after 2 seconds
+      setTimeout(() => {
+        flushDnsBtn.classList.remove('success');
+        flushDnsBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path>
+          </svg>
+          Flush DNS Cache
+        `;
+        flushDnsBtn.disabled = false;
+      }, 2000);
+    } else {
+      // Show error state
+      flushDnsBtn.classList.add('error');
+      flushDnsBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        Failed
+      `;
+      showMessage(result.message || 'Failed to flush DNS cache', 'error');
+      
+      // Reset to normal state after 2 seconds
+      setTimeout(() => {
+        flushDnsBtn.classList.remove('error');
+        flushDnsBtn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path>
+          </svg>
+          Flush DNS Cache
+        `;
+        flushDnsBtn.disabled = false;
+      }, 2000);
+    }
+  } catch (error) {
+    // Remove loading state
+    flushDnsBtn.classList.remove('loading');
+    
+    // Show error state
+    flushDnsBtn.classList.add('error');
+    flushDnsBtn.innerHTML = `
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="8" x2="12" y2="12"></line>
+        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+      </svg>
+      Failed
+    `;
+    showMessage('Failed to flush DNS cache', 'error');
+    
+    // Reset to normal state after 2 seconds
+    setTimeout(() => {
+      flushDnsBtn.classList.remove('error');
+      flushDnsBtn.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"></path>
+        </svg>
+        Flush DNS Cache
+      `;
+      flushDnsBtn.disabled = false;
+    }, 2000);
   }
 });
 
