@@ -12,7 +12,9 @@
     "version:major": "npm version major --no-git-tag-version",
     "release:patch": "npm run version:patch && npm run build:publish",
     "release:minor": "npm run version:minor && npm run build:publish",
-    "release:major": "npm run version:major && npm run build:publish"
+    "release:major": "npm run version:major && npm run build:publish",
+    "update-server": "node local-update-server.js",
+    "test-update": "UPDATE_SERVER_URL=http://localhost:3000 electron ."
   },
   "keywords": [
     "electron",
@@ -37,7 +39,10 @@
     },
     "mac": {
       "category": "public.app-category.utilities",
-      "target": "dmg",
+      "target": [
+        "dmg",
+        "zip"
+      ],
       "icon": "assets/icon.png"
     },
     "files": [

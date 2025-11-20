@@ -108,12 +108,27 @@ function createDownloadProgressWindow() {
     Math.round((height - 240) / 2)
   );
 
+  // Show window when ready
   downloadProgressWindow.once('ready-to-show', () => {
+    console.log('[Update] Download progress window ready to show');
     downloadProgressWindow.show();
   });
 
-  downloadProgressWindow.loadURL(`data:text/html;charset=utf-8,
-    <!DOCTYPE html>
+  // Fallback: show after content loads
+  downloadProgressWindow.webContents.once('did-finish-load', () => {
+    console.log('[Update] Download progress content finished loading');
+    if (!downloadProgressWindow.isVisible()) {
+      downloadProgressWindow.show();
+    }
+  });
+
+  // Error handling
+  downloadProgressWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('[Update] Download progress window failed to load:', errorCode, errorDescription);
+  });
+
+  // Build HTML content
+  const progressHtml = `<!DOCTYPE html>
     <html>
     <head>
       <meta charset="UTF-8">
@@ -253,7 +268,12 @@ function createDownloadProgressWindow() {
       }
     </script>
     </html>
-  `);
+  `;
+
+  console.log('[Update] Loading download progress window');
+  // Use data URL with proper encoding
+  const progressDataUrl = `data:text/html;charset=utf-8,${encodeURIComponent(progressHtml)}`;
+  downloadProgressWindow.loadURL(progressDataUrl);
 
   downloadProgressWindow.on('closed', () => {
     downloadProgressWindow = null;
@@ -322,12 +342,27 @@ function showUpdateAvailableDialog(info) {
   const currentVersion = app.getVersion();
   const newVersion = info.version;
 
+  // Show window when ready
   updateDialogWindow.once('ready-to-show', () => {
+    console.log('[Update] Dialog window ready to show');
     updateDialogWindow.show();
   });
 
-  updateDialogWindow.loadURL(`data:text/html;charset=utf-8,
-    <!DOCTYPE html>
+  // Fallback: show after content loads
+  updateDialogWindow.webContents.once('did-finish-load', () => {
+    console.log('[Update] Dialog content finished loading');
+    if (!updateDialogWindow.isVisible()) {
+      updateDialogWindow.show();
+    }
+  });
+
+  // Error handling
+  updateDialogWindow.webContents.on('did-fail-load', (event, errorCode, errorDescription) => {
+    console.error('[Update] Dialog failed to load:', errorCode, errorDescription);
+  });
+
+  // Build HTML content
+  const htmlContent = `<!DOCTYPE html>
     <html>
     <head>
       <meta charset="UTF-8">
@@ -464,7 +499,12 @@ function showUpdateAvailableDialog(info) {
       }
     </script>
     </html>
-  `);
+  `;
+
+  console.log('[Update] Loading dialog window with version:', newVersion);
+  // Use data URL with proper encoding
+  const dataUrl = `data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`;
+  updateDialogWindow.loadURL(dataUrl);
 
   updateDialogWindow.on('closed', () => {
     updateDialogWindow = null;
@@ -774,6 +814,26 @@ ipcMain.handle('flush-dns', async () => {
 autoUpdater.autoDownload = false; // Ask user before downloading
 autoUpdater.autoInstallOnAppQuit = true;
 
+// Use local update server if UPDATE_SERVER_URL is set (works in both dev and packaged)
+const updateServerUrl = process.env.UPDATE_SERVER_URL;
+console.log(`[Update] UPDATE_SERVER_URL: ${updateServerUrl || 'not set'}`);
+console.log(`[Update] App is packaged: ${app.isPackaged}`);
+
+if (updateServerUrl) {
+  // Ensure URL ends with / for generic provider
+  const feedUrl = updateServerUrl.endsWith('/') ? updateServerUrl : `${updateServerUrl}/`;
+  autoUpdater.setFeedURL({
+    provider: 'generic',
+    url: feedUrl
+  });
+  console.log(`[Update] Using local update server: ${feedUrl}`);
+} else if (!app.isPackaged) {
+  // In development without local server, disable auto-updates
+  console.log('[Update] Auto-updates disabled in development mode (set UPDATE_SERVER_URL to enable)');
+} else {
+  console.log('[Update] Using GitHub releases (production mode)');
+}
+
 let downloadProgressWindow = null;
 let isDownloading = false;
 
@@ -781,12 +841,16 @@ let isDownloading = false;
 function checkForUpdates(showDialog = false) {
   manualUpdateCheck = showDialog;
   
-  if (!app.isPackaged) {
+  // Allow updates in development mode if local server is configured
+  const hasLocalServer = process.env.UPDATE_SERVER_URL;
+  
+  if (!app.isPackaged && !hasLocalServer) {
     if (showDialog) {
       dialog.showMessageBox(window, {
         type: 'info',
         title: 'Update Check',
-        message: 'Updates are only available in the packaged application.',
+        message: 'Updates are only available in the packaged application or when using a local update server.',
+        detail: 'To test updates locally, run: UPDATE_SERVER_URL=http://localhost:3000 npm start',
         buttons: ['OK']
       });
     }
@@ -795,8 +859,27 @@ function checkForUpdates(showDialog = false) {
 
   autoUpdater.checkForUpdates().catch(err => {
     console.error('Error checking for updates:', err);
+    
+    // Check if it's a GitHub API error (503, rate limit, etc.)
+    const errorMessage = err.message || err.toString();
+    const isGitHubError = errorMessage.includes('GitHub') || 
+                         errorMessage.includes('503') || 
+                         errorMessage.includes('HttpError') ||
+                         errorMessage.includes('rate limit') ||
+                         errorMessage.includes('Unicorn');
+    
     if (showDialog) {
-      dialog.showErrorBox('Update Error', `Failed to check for updates: ${err.message}`);
+      let userMessage = 'Failed to check for updates.';
+      if (isGitHubError) {
+        userMessage = 'GitHub is temporarily unavailable (503 error).\n\n' +
+                     'For testing, you can use a local update server:\n' +
+                     '1. Run: npm run update-server\n' +
+                     '2. Run app with: UPDATE_SERVER_URL=http://localhost:3000 npm start';
+      } else {
+        userMessage = `Failed to check for updates: ${errorMessage}`;
+      }
+      
+      dialog.showErrorBox('Update Error', userMessage);
     }
   });
 }
@@ -807,7 +890,8 @@ autoUpdater.on('checking-for-update', () => {
 });
 
 autoUpdater.on('update-available', (info) => {
-  console.log('Update available:', info.version);
+  console.log('[Update] Update available:', info.version);
+  console.log('[Update] Update info:', JSON.stringify(info, null, 2));
   updateAvailable = true;
   updateInfo = info;
   if (tray) {
@@ -820,7 +904,9 @@ autoUpdater.on('update-available', (info) => {
 });
 
 autoUpdater.on('update-not-available', (info) => {
-  console.log('Update not available');
+  console.log('[Update] Update not available');
+  console.log('[Update] Info:', JSON.stringify(info, null, 2));
+  console.log('[Update] Current version:', app.getVersion());
   updateAvailable = false;
   updateInfo = null;
   if (tray) {
@@ -1032,3 +1118,5 @@ ipcMain.handle('set-start-at-login', (event, enabled) => {
   setupStartAtLogin(enabled);
   return { success: true };
 });
+
+
