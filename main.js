@@ -343,6 +343,18 @@ autoUpdater.on('update-available', (info) => {
   if (tray) {
     tray.setToolTip(`SpoofDPI - Update available: ${info.version}`);
   }
+  
+  // Show dialog if user manually checked for updates
+  if (manualUpdateCheck) {
+    dialog.showMessageBox(window, {
+      type: 'info',
+      title: 'Update Available',
+      message: `A new version (${info.version}) is available. The update will be downloaded automatically.`,
+      detail: `Current version: ${app.getVersion()}\nNew version: ${info.version}`,
+      buttons: ['OK']
+    }).catch(() => {}); // Ignore errors if window is closed
+    manualUpdateCheck = false;
+  }
 });
 
 autoUpdater.on('update-not-available', (info) => {
@@ -369,6 +381,11 @@ autoUpdater.on('error', (err) => {
   if (tray) {
     tray.setToolTip('SpoofDPI');
   }
+  // Show error dialog if user manually checked for updates
+  if (manualUpdateCheck) {
+    dialog.showErrorBox('Update Error', `Failed to check for updates: ${err.message}`).catch(() => {});
+    manualUpdateCheck = false;
+  }
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
@@ -387,6 +404,7 @@ autoUpdater.on('update-downloaded', (info) => {
     tray.setToolTip(`SpoofDPI - Update ready: ${info.version}`);
   }
   
+  // Always show dialog when update is downloaded
   dialog.showMessageBox(window, {
     type: 'info',
     title: 'Update Ready',
@@ -399,6 +417,9 @@ autoUpdater.on('update-downloaded', (info) => {
       autoUpdater.quitAndInstall();
     }
   }).catch(() => {}); // Ignore errors if window is closed
+  
+  // Reset manual check flag
+  manualUpdateCheck = false;
 });
 
 app.whenReady().then(() => {

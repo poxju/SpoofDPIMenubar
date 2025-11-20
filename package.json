@@ -1,6 +1,6 @@
 {
   "name": "spoofdpi-menubar",
-  "version": "1.0.2",
+  "version": "1.0.4",
   "description": "macOS menubar app to control spoofdpi",
   "main": "main.js",
   "scripts": {
