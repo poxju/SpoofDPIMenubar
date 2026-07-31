@@ -2,14 +2,27 @@
 
 Native macOS menubar app for [SpoofDPI](https://github.com/xvzc/SpoofDPI), inspired by [GoodbyeDPI-Turkey](https://github.com/cagritaskn/GoodbyeDPI-Turkey).
 
+## Download
+
+Grab the latest build from [Releases](https://github.com/poxju/SpoofDPIMenubar/releases/latest):
+
+1. Download `SpoofDPI-x.y.z.zip` and unzip it.
+2. Drag `SpoofDPI.app` somewhere convenient (for example Applications).
+3. Open it the first time with **right-click → Open** (Gatekeeper blocks unsigned apps with a double-click).
+4. If macOS still refuses: **System Settings → Privacy & Security** → scroll to the blocked-app message → **Open Anyway**.
+
+This build is **not notarized** (no paid Apple Developer ID). On Connect, macOS may ask for an admin password to install the QUIC/`pf` block.
+
+**Requirements:** macOS 26+, Apple Silicon recommended (bundled `spoofdpi` is arm64). Fresh install — not an in-place upgrade from the old Electron 1.x app.
+
 ## Why native (SwiftUI)?
 
 Rewritten from Electron to a native SwiftUI app for:
 
 - A smaller footprint (no Chromium/Node) and faster launch
 - First-class `MenuBarExtra` integration and standard macOS controls
-- Privileged helper (`SMAppService`) for `pf` QUIC blocking instead of ad-hoc admin scripts
-- Sparkle auto-update and a clear path to Developer ID notarization
+- Privileged helper (`SMAppService`) for `pf` QUIC blocking, with an admin-prompt fallback when the helper is unavailable
+- Sparkle wiring ready for later Developer ID / notarized auto-updates
 
 ## Features
 
@@ -18,14 +31,13 @@ Rewritten from Electron to a native SwiftUI app for:
 - Privileged helper to install a `pf` rule that blocks UDP/443 (QUIC) so Safari cannot bypass the proxy
 - Safari restart + connectivity checks, with Setup Safari / Network Settings actions
 - Settings: system proxy toggle, start at login, Dock icon, update frequency, flush DNS, remove QUIC block
-- Sparkle 2 auto-update (GitHub Releases appcast)
+- Sparkle 2 auto-update (GitHub Releases appcast) — requires a signed/notarized pipeline to work end-to-end
 
-## Requirements
+## Requirements (building from source)
 
 - macOS 26+
 - Xcode 26+
 - Apple Silicon (bundled `spoofdpi` is arm64)
-- Apple Developer signing for Release (helper registration + notarization)
 
 ## Build & run
 
@@ -43,10 +55,10 @@ xcodebuild -project SpoofDPI.xcodeproj -scheme SpoofDPI -configuration Debug bui
 
 The SpoofDPI binary lives at `SpoofDPIApp/Resources/spoofdpi`. The helper is copied into `SpoofDPI.app/Contents/MacOS/SpoofDPIHelper` with its launchd plist under `Contents/Library/LaunchDaemons/`.
 
-### Debug notes
+### Unsigned / helper notes
 
-- Unsigned Debug builds may not register the LaunchDaemon. In **DEBUG**, QUIC install/remove can fall back to an AppleScript admin prompt so local testing still works.
-- Release builds require a working signed helper (no AppleScript fallback).
+- Without Developer ID, the LaunchDaemon helper usually will not register. The app falls back to an AppleScript admin prompt for QUIC install/remove and DNS flush.
+- With a properly signed Developer ID build later, the helper path is preferred and Gatekeeper/notarization warnings go away.
 
 ## Privileged helper
 

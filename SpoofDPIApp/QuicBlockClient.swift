@@ -37,30 +37,29 @@ final class QuicBlockClient {
     private var connection: NSXPCConnection?
 
     func ensureInstalled() async throws {
-        try await registerHelperIfNeeded()
-        let (ok, message) = try await call { remote, reply in
-            remote.installQuicBlock(reply: reply)
-        }
-        if !ok {
-            #if DEBUG
-            try await installViaAppleScriptFallback()
-            #else
+        do {
+            try await registerHelperIfNeeded()
+            let (ok, message) = try await call { remote, reply in
+                remote.installQuicBlock(reply: reply)
+            }
+            if ok { return }
             throw QuicBlockError.installFailed(message)
-            #endif
+        } catch {
+            // Unsigned / non–Developer ID builds can't register the LaunchDaemon; fall back to admin prompt.
+            try await installViaAppleScriptFallback()
         }
     }
 
     func remove() async throws {
-        try await registerHelperIfNeeded()
-        let (ok, message) = try await call { remote, reply in
-            remote.removeQuicBlock(reply: reply)
-        }
-        if !ok {
-            #if DEBUG
-            try await removeViaAppleScriptFallback()
-            #else
+        do {
+            try await registerHelperIfNeeded()
+            let (ok, message) = try await call { remote, reply in
+                remote.removeQuicBlock(reply: reply)
+            }
+            if ok { return }
             throw QuicBlockError.removeFailed(message)
-            #endif
+        } catch {
+            try await removeViaAppleScriptFallback()
         }
     }
 
@@ -72,21 +71,20 @@ final class QuicBlockClient {
             }
             return ok
         } catch {
-            #if DEBUG
-            return await debugPfStatus()
-            #else
-            return false
-            #endif
+            return await pfStatusProbe()
         }
     }
 
     func flushDNSPrivileged() async throws {
-        try await registerHelperIfNeeded()
-        let (ok, message) = try await call { remote, reply in
-            remote.flushDNS(reply: reply)
-        }
-        if !ok {
+        do {
+            try await registerHelperIfNeeded()
+            let (ok, message) = try await call { remote, reply in
+                remote.flushDNS(reply: reply)
+            }
+            if ok { return }
             throw QuicBlockError.installFailed(message)
+        } catch {
+            try await flushDNSViaAppleScriptFallback()
         }
     }
 
@@ -102,16 +100,7 @@ final class QuicBlockClient {
         case .notFound:
             throw QuicBlockError.registrationFailed("Helper launchd plist was not found in the app bundle.")
         case .notRegistered:
-            do {
-                try service.register()
-            } catch {
-                #if DEBUG
-                // Allow DEBUG osascript fallback without a signed helper.
-                return
-                #else
-                throw QuicBlockError.registrationFailed(error.localizedDescription)
-                #endif
-            }
+            try service.register()
         @unknown default:
             return
         }
@@ -146,24 +135,29 @@ final class QuicBlockClient {
         return connection
     }
 
-    #if DEBUG
     private func installViaAppleScriptFallback() async throws {
-        let script = Self.pfInstallShellScript()
-        let escaped = script.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
-        let apple = "do shell script \"\(escaped)\" with administrator privileges"
-        _ = try await Shell.runAsync("/usr/bin/osascript", arguments: ["-e", apple])
+        try await runAdminShell(Self.pfInstallShellScript())
     }
 
     private func removeViaAppleScriptFallback() async throws {
-        let script = Self.pfRemoveShellScript()
-        let escaped = script.replacingOccurrences(of: "\\", with: "\\\\").replacingOccurrences(of: "\"", with: "\\\"")
+        try await runAdminShell(Self.pfRemoveShellScript())
+    }
+
+    private func flushDNSViaAppleScriptFallback() async throws {
+        try await runAdminShell("dscacheutil -flushcache; killall -HUP mDNSResponder")
+    }
+
+    private func runAdminShell(_ script: String) async throws {
+        let escaped = script
+            .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
         let apple = "do shell script \"\(escaped)\" with administrator privileges"
         _ = try await Shell.runAsync("/usr/bin/osascript", arguments: ["-e", apple])
     }
 
-    private func debugPfStatus() async -> Bool {
+    private func pfStatusProbe() async -> Bool {
         let out = (try? await Shell.runAsync("/sbin/pfctl", arguments: ["-sr"], throwOnError: false)) ?? ""
-        return out.contains("com.spoofdpi") || out.contains("port 443") && out.lowercased().contains("block")
+        return out.contains("com.spoofdpi") || (out.contains("port 443") && out.lowercased().contains("block"))
     }
 
     private static func pfInstallShellScript() -> String {
@@ -188,5 +182,4 @@ final class QuicBlockClient {
         pfctl -f /etc/pf.conf || true
         """
     }
-    #endif
 }
