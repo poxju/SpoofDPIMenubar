@@ -10,8 +10,8 @@ settings:
   base:
     SWIFT_VERSION: "6.0"
     MACOSX_DEPLOYMENT_TARGET: "26.0"
-    MARKETING_VERSION: "2.0.0"
-    CURRENT_PROJECT_VERSION: "1"
+    MARKETING_VERSION: "2.0.1"
+    CURRENT_PROJECT_VERSION: "2"
 targets:
   SpoofDPIHelper:
     type: tool
@@ -54,6 +54,7 @@ targets:
         PRODUCT_NAME: SpoofDPI
         PRODUCT_BUNDLE_IDENTIFIER: com.spoofdpi.menubar
         INFOPLIST_FILE: SpoofDPIApp/Info.plist
+        CODE_SIGN_ENTITLEMENTS: SpoofDPIApp/SpoofDPI.entitlements
         GENERATE_INFOPLIST_FILE: NO
         CODE_SIGN_STYLE: Automatic
         ENABLE_HARDENED_RUNTIME: YES

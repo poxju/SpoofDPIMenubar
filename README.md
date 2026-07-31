@@ -10,6 +10,7 @@ Grab the latest build from [Releases](https://github.com/poxju/SpoofDPIMenubar/r
 2. Drag `SpoofDPI.app` somewhere convenient (for example Applications).
 3. Open it the first time with **right-click → Open** (Gatekeeper blocks unsigned apps with a double-click).
 4. If macOS still refuses: **System Settings → Privacy & Security** → scroll to the blocked-app message → **Open Anyway**.
+5. Look in the **menu bar** (top-right) — there is no Dock icon by default.
 
 This build is **not notarized** (no paid Apple Developer ID). On Connect, macOS may ask for an admin password to install the QUIC/`pf` block.
 

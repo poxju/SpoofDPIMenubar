@@ -64,6 +64,7 @@
 		31A437A22C35D5AC456031C7 /* MenuBarPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverView.swift; sourceTree = "<group>"; };
 		34951D0591AB6E201BF09FEC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
 		594F1C66A990B0A0BEFC3C0B /* SpoofDPIProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofDPIProcess.swift; sourceTree = "<group>"; };
+		5956FA36FBE72591A9ADB792 /* SpoofDPI.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SpoofDPI.entitlements; sourceTree = "<group>"; };
 		5B2D251AE9929F90F11A5178 /* QuicBlockClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuicBlockClient.swift; sourceTree = "<group>"; };
 		68CB57B9DFF17195613DACD5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		802F353E610F4BA2BB8E0044 /* SetupBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupBannerView.swift; sourceTree = "<group>"; };
@@ -136,6 +137,7 @@
 				F46AD2F59456D6799D06580F /* SafariCoordinator.swift */,
 				A1F5048B549A8DAF639938D9 /* SettingsStore.swift */,
 				F5A9BA1728F33557C502CD2F /* Shell.swift */,
+				5956FA36FBE72591A9ADB792 /* SpoofDPI.entitlements */,
 				E8C812EF5B5D75CCB7699C07 /* SpoofDPIApp.swift */,
 				594F1C66A990B0A0BEFC3C0B /* SpoofDPIProcess.swift */,
 				9A433C62920E30A86429C2D5 /* SystemProxyManager.swift */,
@@ -403,7 +405,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -422,7 +424,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -468,7 +470,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -481,7 +483,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 26.0;
-				MARKETING_VERSION = 2.0.0;
+				MARKETING_VERSION = 2.0.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -496,6 +498,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SpoofDPIApp/SpoofDPI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
@@ -519,6 +522,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = SpoofDPIApp/SpoofDPI.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
