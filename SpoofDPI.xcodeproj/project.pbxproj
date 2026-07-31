@@ -1,0 +1,574 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		29633016D6C8C9087979D79C /* PillTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561630A1BD1C63E8D6DD37E /* PillTabBar.swift */; };
+		2ADA885B249C4B6D25784E3B /* SpoofDPIProcess.swift in Sources */ = {isa = PBXBuildFile; fileRef = 594F1C66A990B0A0BEFC3C0B /* SpoofDPIProcess.swift */; };
+		343F8251D8AE1FC5693EA543 /* HelperMain.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A73F61CE16AF2FC621A6187 /* HelperMain.swift */; };
+		44D701FFDF0B3504F1F7ED7B /* SetupBannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 802F353E610F4BA2BB8E0044 /* SetupBannerView.swift */; };
+		49B61DC1B367BBFD03D7A92C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2DCBC2467870A825B88220E5 /* Assets.xcassets */; };
+		56DEE32CEC9D4846556ADFA9 /* Sparkle.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5481B971ECE32F65A01DD54 /* Sparkle.xcframework */; };
+		61767E4831850EE047011930 /* Shell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5A9BA1728F33557C502CD2F /* Shell.swift */; };
+		6F1531E15EA77266EA2F9EA5 /* UpdateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EF22F8D0DCB467569AF556 /* UpdateController.swift */; };
+		73BA739F47690D691CFBE708 /* SpoofDPIApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8C812EF5B5D75CCB7699C07 /* SpoofDPIApp.swift */; };
+		8171CE57AB4C13512541892A /* SafariCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46AD2F59456D6799D06580F /* SafariCoordinator.swift */; };
+		893755D9D7EBCD273AEA7458 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB95AACD6E4F3FB60211F093 /* SettingsView.swift */; };
+		A638279F286D2379593DE089 /* PACServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE6C9BD8FC3C8853EDE3B27A /* PACServer.swift */; };
+		ADF70FA9824C1DEED1531C93 /* Sparkle.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B5481B971ECE32F65A01DD54 /* Sparkle.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		B0BF7E0FE10864ADCFEDD4D5 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CB57B9DFF17195613DACD5 /* main.swift */; };
+		B1A4C58066499B150AE5B8F6 /* ProxyHealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14FAE5240A7D734E6DA14393 /* ProxyHealth.swift */; };
+		C1BBD37B68BA0B32B50D424B /* spoofdpi in Resources */ = {isa = PBXBuildFile; fileRef = F4D0D59F6C508AD784E556D3 /* spoofdpi */; };
+		C392A78A11F4F4ACB10094BC /* QuicBlockClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B2D251AE9929F90F11A5178 /* QuicBlockClient.swift */; };
+		C6C04D2F0B962E73B3F34C1C /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34951D0591AB6E201BF09FEC /* AppState.swift */; };
+		D45292D96B94540033DA7178 /* SystemProxyManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A433C62920E30A86429C2D5 /* SystemProxyManager.swift */; };
+		E2CD22ED04A389C0D4789DF7 /* PopoverLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22EAE9CDE82C66D820761396 /* PopoverLayout.swift */; };
+		FA972DBC63BDF6123DD452B6 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F5048B549A8DAF639938D9 /* SettingsStore.swift */; };
+		FCDDE9CFB0441E835D87ADFC /* MenuBarPopoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A437A22C35D5AC456031C7 /* MenuBarPopoverView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		70D7041F2CD61D89C197F6CB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 8A2994CAF9140840703EDD6D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4FFCE984B55F5BBD87ECB73D;
+			remoteInfo = SpoofDPIHelper;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		155347763034B4AA51E28F95 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				ADF70FA9824C1DEED1531C93 /* Sparkle.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		14FAE5240A7D734E6DA14393 /* ProxyHealth.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProxyHealth.swift; sourceTree = "<group>"; };
+		22EAE9CDE82C66D820761396 /* PopoverLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopoverLayout.swift; sourceTree = "<group>"; };
+		26C7EAA868D6379DC28113E5 /* SpoofDPIHelper */ = {isa = PBXFileReference; includeInIndex = 0; path = SpoofDPIHelper; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A73F61CE16AF2FC621A6187 /* HelperMain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelperMain.swift; sourceTree = "<group>"; };
+		2DCBC2467870A825B88220E5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		31A437A22C35D5AC456031C7 /* MenuBarPopoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarPopoverView.swift; sourceTree = "<group>"; };
+		34951D0591AB6E201BF09FEC /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		594F1C66A990B0A0BEFC3C0B /* SpoofDPIProcess.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofDPIProcess.swift; sourceTree = "<group>"; };
+		5B2D251AE9929F90F11A5178 /* QuicBlockClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuicBlockClient.swift; sourceTree = "<group>"; };
+		68CB57B9DFF17195613DACD5 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		802F353E610F4BA2BB8E0044 /* SetupBannerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupBannerView.swift; sourceTree = "<group>"; };
+		9A433C62920E30A86429C2D5 /* SystemProxyManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemProxyManager.swift; sourceTree = "<group>"; };
+		A1F5048B549A8DAF639938D9 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		B5481B971ECE32F65A01DD54 /* Sparkle.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = Sparkle.xcframework; path = Vendor/Sparkle/Sparkle.xcframework; sourceTree = "<group>"; };
+		B561630A1BD1C63E8D6DD37E /* PillTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillTabBar.swift; sourceTree = "<group>"; };
+		B8EF22F8D0DCB467569AF556 /* UpdateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateController.swift; sourceTree = "<group>"; };
+		DDD289AA4CD574B50AC3B9EF /* SpoofDPI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpoofDPI.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8C812EF5B5D75CCB7699C07 /* SpoofDPIApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpoofDPIApp.swift; sourceTree = "<group>"; };
+		EB95AACD6E4F3FB60211F093 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		EE6C9BD8FC3C8853EDE3B27A /* PACServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PACServer.swift; sourceTree = "<group>"; };
+		F46AD2F59456D6799D06580F /* SafariCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariCoordinator.swift; sourceTree = "<group>"; };
+		F4D0D59F6C508AD784E556D3 /* spoofdpi */ = {isa = PBXFileReference; path = spoofdpi; sourceTree = "<group>"; };
+		F5A9BA1728F33557C502CD2F /* Shell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Shell.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		935174D8621693C73CC00D44 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				56DEE32CEC9D4846556ADFA9 /* Sparkle.xcframework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		314712325FE0AE05DC07D64C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DDD289AA4CD574B50AC3B9EF /* SpoofDPI.app */,
+				26C7EAA868D6379DC28113E5 /* SpoofDPIHelper */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		843BF2B0F08742D51BCFDCE6 /* SpoofDPIHelper */ = {
+			isa = PBXGroup;
+			children = (
+				2A73F61CE16AF2FC621A6187 /* HelperMain.swift */,
+				68CB57B9DFF17195613DACD5 /* main.swift */,
+			);
+			path = SpoofDPIHelper;
+			sourceTree = "<group>";
+		};
+		88BFEB7162D21FC7B0E17A0C /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				31A437A22C35D5AC456031C7 /* MenuBarPopoverView.swift */,
+				B561630A1BD1C63E8D6DD37E /* PillTabBar.swift */,
+				22EAE9CDE82C66D820761396 /* PopoverLayout.swift */,
+				EB95AACD6E4F3FB60211F093 /* SettingsView.swift */,
+				802F353E610F4BA2BB8E0044 /* SetupBannerView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		8EB8AAEDB643C2D76D675D4C /* SpoofDPIApp */ = {
+			isa = PBXGroup;
+			children = (
+				FFAD64C60CB301AA4C5D8A6A /* Resources */,
+				88BFEB7162D21FC7B0E17A0C /* Views */,
+				34951D0591AB6E201BF09FEC /* AppState.swift */,
+				2DCBC2467870A825B88220E5 /* Assets.xcassets */,
+				EE6C9BD8FC3C8853EDE3B27A /* PACServer.swift */,
+				14FAE5240A7D734E6DA14393 /* ProxyHealth.swift */,
+				5B2D251AE9929F90F11A5178 /* QuicBlockClient.swift */,
+				F46AD2F59456D6799D06580F /* SafariCoordinator.swift */,
+				A1F5048B549A8DAF639938D9 /* SettingsStore.swift */,
+				F5A9BA1728F33557C502CD2F /* Shell.swift */,
+				E8C812EF5B5D75CCB7699C07 /* SpoofDPIApp.swift */,
+				594F1C66A990B0A0BEFC3C0B /* SpoofDPIProcess.swift */,
+				9A433C62920E30A86429C2D5 /* SystemProxyManager.swift */,
+				B8EF22F8D0DCB467569AF556 /* UpdateController.swift */,
+			);
+			path = SpoofDPIApp;
+			sourceTree = "<group>";
+		};
+		AB1CCE138338BCE060A5076A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B5481B971ECE32F65A01DD54 /* Sparkle.xcframework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		FAED3FB1A020693E9F9D267F = {
+			isa = PBXGroup;
+			children = (
+				8EB8AAEDB643C2D76D675D4C /* SpoofDPIApp */,
+				843BF2B0F08742D51BCFDCE6 /* SpoofDPIHelper */,
+				AB1CCE138338BCE060A5076A /* Frameworks */,
+				314712325FE0AE05DC07D64C /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FFAD64C60CB301AA4C5D8A6A /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4D0D59F6C508AD784E556D3 /* spoofdpi */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		4E2951DF46E304977659A94E /* SpoofDPI */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CEB5F3D80D0ADC96757CBD41 /* Build configuration list for PBXNativeTarget "SpoofDPI" */;
+			buildPhases = (
+				FC4648A42B0B81C7E32A4D51 /* Sources */,
+				3951B6D9633847C5108DC1D7 /* Resources */,
+				935174D8621693C73CC00D44 /* Frameworks */,
+				155347763034B4AA51E28F95 /* Embed Frameworks */,
+				94587DC856092F730FBAD197 /* Embed Helper and LaunchDaemon */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B95D488C8A67F67CBA7F13AD /* PBXTargetDependency */,
+			);
+			name = SpoofDPI;
+			packageProductDependencies = (
+			);
+			productName = SpoofDPI;
+			productReference = DDD289AA4CD574B50AC3B9EF /* SpoofDPI.app */;
+			productType = "com.apple.product-type.application";
+		};
+		4FFCE984B55F5BBD87ECB73D /* SpoofDPIHelper */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 746A220C2E27A7DDFC8830D5 /* Build configuration list for PBXNativeTarget "SpoofDPIHelper" */;
+			buildPhases = (
+				CFA78384F3ED4DD3426EDC0E /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SpoofDPIHelper;
+			packageProductDependencies = (
+			);
+			productName = SpoofDPIHelper;
+			productReference = 26C7EAA868D6379DC28113E5 /* SpoofDPIHelper */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8A2994CAF9140840703EDD6D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					4E2951DF46E304977659A94E = {
+						ProvisioningStyle = Automatic;
+					};
+					4FFCE984B55F5BBD87ECB73D = {
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = CB7406E61763CB34F7074DD8 /* Build configuration list for PBXProject "SpoofDPI" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = FAED3FB1A020693E9F9D267F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 314712325FE0AE05DC07D64C /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4FFCE984B55F5BBD87ECB73D /* SpoofDPIHelper */,
+				4E2951DF46E304977659A94E /* SpoofDPI */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3951B6D9633847C5108DC1D7 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				49B61DC1B367BBFD03D7A92C /* Assets.xcassets in Resources */,
+				C1BBD37B68BA0B32B50D424B /* spoofdpi in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		94587DC856092F730FBAD197 /* Embed Helper and LaunchDaemon */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Helper and LaunchDaemon";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\nAPP_BUNDLE=\"${TARGET_BUILD_DIR}/${FULL_PRODUCT_NAME}\"\nmkdir -p \"${APP_BUNDLE}/Contents/MacOS\"\nmkdir -p \"${APP_BUNDLE}/Contents/Library/LaunchDaemons\"\ncp \"${BUILT_PRODUCTS_DIR}/SpoofDPIHelper\" \"${APP_BUNDLE}/Contents/MacOS/SpoofDPIHelper\"\nchmod +x \"${APP_BUNDLE}/Contents/MacOS/SpoofDPIHelper\"\ncp \"${SRCROOT}/SpoofDPIApp/Library/LaunchDaemons/com.spoofdpi.menubar.helper.plist\" \\\n   \"${APP_BUNDLE}/Contents/Library/LaunchDaemons/com.spoofdpi.menubar.helper.plist\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CFA78384F3ED4DD3426EDC0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				343F8251D8AE1FC5693EA543 /* HelperMain.swift in Sources */,
+				B0BF7E0FE10864ADCFEDD4D5 /* main.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		FC4648A42B0B81C7E32A4D51 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C6C04D2F0B962E73B3F34C1C /* AppState.swift in Sources */,
+				FCDDE9CFB0441E835D87ADFC /* MenuBarPopoverView.swift in Sources */,
+				A638279F286D2379593DE089 /* PACServer.swift in Sources */,
+				29633016D6C8C9087979D79C /* PillTabBar.swift in Sources */,
+				E2CD22ED04A389C0D4789DF7 /* PopoverLayout.swift in Sources */,
+				B1A4C58066499B150AE5B8F6 /* ProxyHealth.swift in Sources */,
+				C392A78A11F4F4ACB10094BC /* QuicBlockClient.swift in Sources */,
+				8171CE57AB4C13512541892A /* SafariCoordinator.swift in Sources */,
+				FA972DBC63BDF6123DD452B6 /* SettingsStore.swift in Sources */,
+				893755D9D7EBCD273AEA7458 /* SettingsView.swift in Sources */,
+				44D701FFDF0B3504F1F7ED7B /* SetupBannerView.swift in Sources */,
+				61767E4831850EE047011930 /* Shell.swift in Sources */,
+				73BA739F47690D691CFBE708 /* SpoofDPIApp.swift in Sources */,
+				2ADA885B249C4B6D25784E3B /* SpoofDPIProcess.swift in Sources */,
+				D45292D96B94540033DA7178 /* SystemProxyManager.swift in Sources */,
+				6F1531E15EA77266EA2F9EA5 /* UpdateController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B95D488C8A67F67CBA7F13AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4FFCE984B55F5BBD87ECB73D /* SpoofDPIHelper */;
+			targetProxy = 70D7041F2CD61D89C197F6CB /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		046317015E9E87472D68EBAE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.spoofdpi.menubar.helper;
+				PRODUCT_NAME = SpoofDPIHelper;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		2B7EFF04372388D08FBEB719 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CREATE_INFOPLIST_SECTION_IN_BINARY = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.spoofdpi.menubar.helper;
+				PRODUCT_NAME = SpoofDPIHelper;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		2BB5349E856EED6D685730AA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.0.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		5036B34A39261864A1068F96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.0;
+				MARKETING_VERSION = 2.0.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A54BC039D28767E4B7F939D6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"Vendor/Sparkle\"",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SpoofDPIApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.spoofdpi.menubar;
+				PRODUCT_NAME = SpoofDPI;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Debug;
+		};
+		D22AA8BF4007C18A60B5243C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"Vendor/Sparkle\"",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = SpoofDPIApp/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/../Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.spoofdpi.menubar;
+				PRODUCT_NAME = SpoofDPI;
+				SDKROOT = macosx;
+				SUPPORTED_PLATFORMS = macosx;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		746A220C2E27A7DDFC8830D5 /* Build configuration list for PBXNativeTarget "SpoofDPIHelper" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				046317015E9E87472D68EBAE /* Debug */,
+				2B7EFF04372388D08FBEB719 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CB7406E61763CB34F7074DD8 /* Build configuration list for PBXProject "SpoofDPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2BB5349E856EED6D685730AA /* Debug */,
+				5036B34A39261864A1068F96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CEB5F3D80D0ADC96757CBD41 /* Build configuration list for PBXNativeTarget "SpoofDPI" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A54BC039D28767E4B7F939D6 /* Debug */,
+				D22AA8BF4007C18A60B5243C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8A2994CAF9140840703EDD6D /* Project object */;
+}

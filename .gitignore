@@ -1,5 +1,20 @@
-node_modules/
-dist/
-*.dmg
+# macOS / Xcode
 .DS_Store
-npm-debug.log*
+build/
+DerivedData/
+*.xcuserstate
+xcuserdata/
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Sparkle private signing material (never commit)
+Vendor/Sparkle/ed25519_priv.b64
+Vendor/Sparkle/ed25519.pem
+Vendor/Sparkle/ed25519_pub.b64
+sparkle_private_key*
+
+# Packaging
+*.dmg
